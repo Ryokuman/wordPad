@@ -1,0 +1,3 @@
+[submodule "wordPad_front"]
+	path = wordPad_front
+	url = https://github.com/Ryokuman/wordPad_front.git
