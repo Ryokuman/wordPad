@@ -1,6 +1,6 @@
 [submodule "wordPad_front"]
 	path = wordPad_front
 	url = https://github.com/Ryokuman/wordPad_front.git
-[submodule "wordpad_back"]
-	path = wordpad_back
-	url = https://github.com/Ryokuman/wordpad_back.git
+[submodule "wordPad_back"]
+	path = wordPad_back
+	url = https://github.com/Ryokuman/wordPad_back.git
