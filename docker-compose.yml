@@ -1,0 +1,56 @@
+version: "3.8"
+volumes:
+  build_folder: null
+
+services:
+  frontend:
+    build:
+      context: ./wordPad_front
+      args:
+        API_URL: "*"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8000
+    volumes:
+      - ./wordPad_front/:/frontend
+      - build_folder:/frontend/build
+    tty: true
+
+  nginx:
+    build: ./wordPad_nginx
+    ports:
+      - 80:80
+    volumes:
+      - build_folder:/var/www/frontend
+    depends_on:
+      - frontend
+
+  backend:
+    build: ./wordPad_back
+    command: "yarn start"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./wordPad_back:/backend
+    depends_on:
+      postgre:
+        condition: service_healthy
+
+  postgre:
+    build: ./wordPad_db
+    volumes:
+      - ./wordPad_db/data:/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - "./wordPad_db/.env"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  adminer:
+    image: adminer
+    ports:
+      - 6638:8080
